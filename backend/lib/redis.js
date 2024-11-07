@@ -5,4 +5,4 @@ dotenv.config()
 
 export const client = new Redis(process.env.REDIS_URI)
 
-await client.set('foo', 'bar')
+// await client.set('foo', 'bar')
