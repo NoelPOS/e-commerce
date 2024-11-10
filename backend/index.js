@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 import cookieParser from 'cookie-parser'
 import authRoutes from './route/auth.route.js'
 import productRoutes from './route/product.route.js'
+import couponRoutes from './route/coupon.route.js'
 
 import { connectDB } from './lib/db.js'
 
@@ -17,6 +18,7 @@ app.use(cookieParser())
 
 app.use('/api/auth', authRoutes)
 app.use('/api/products', productRoutes)
+app.use('/api/coupons', couponRoutes)
 // app.use('/api/users', userRoutes)
 
 app.listen(PORT, () => {
