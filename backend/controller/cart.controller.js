@@ -8,13 +8,15 @@ export const getCartProducts = async (req, res) => {
       },
     })
 
-    const cartitems = products.map((product) => {
+    const cartItems = products.map((product) => {
       const item = req.user.cartItems.find(
         (cartItem) => (cartItem.id = product.id)
       )
 
       return { quantity: item.quantity, ...product.toJSON() }
     })
+
+    res.json(cartItems)
   } catch (error) {
     console.log('Error in getCartProducts', error.message)
     res.status(500).json({ message: 'Server error', error: error.message })
@@ -33,6 +35,10 @@ export const addToCart = async (req, res) => {
     } else {
       user.cartItems.push(productId)
     }
+
+    await user.save()
+
+    res.json(user.cartItems)
   } catch (error) {
     console.log('Error in addToCart', error.message)
     res.status(500).json({ message: 'Server error', error: error.message })
@@ -72,6 +78,8 @@ export const updateQuantity = async (req, res) => {
     } else {
       if (quantity === 0) {
         user.cartItems = user.cartItems.filter((item) => item.id !== productId)
+        await user.save()
+        res.json(user.cartItems)
       } else {
         existingItem.quantity = quantity
         await user.save()
