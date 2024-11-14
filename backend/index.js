@@ -5,6 +5,8 @@ import authRoutes from './route/auth.route.js'
 import productRoutes from './route/product.route.js'
 import couponRoutes from './route/coupon.route.js'
 import cartRoutes from './route/cart.route.js'
+import paymentRoutes from './route/payment.route.js'
+import analyticsRoutes from './route/analytics.route.js'
 
 import { connectDB } from './lib/db.js'
 
@@ -21,6 +23,8 @@ app.use('/api/auth', authRoutes)
 app.use('/api/products', productRoutes)
 app.use('/api/coupons', couponRoutes)
 app.use('/api/cart', cartRoutes)
+app.use('/api/payment', paymentRoutes)
+app.use('/api/analytics', analyticsRoutes)
 
 app.listen(PORT, () => {
   connectDB()
