@@ -21,7 +21,6 @@ app.use('/api/auth', authRoutes)
 app.use('/api/products', productRoutes)
 app.use('/api/coupons', couponRoutes)
 app.use('/api/cart', cartRoutes)
-// app.use('/api/users', userRoutes)
 
 app.listen(PORT, () => {
   connectDB()

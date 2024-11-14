@@ -1,13 +1,13 @@
 import express from 'express'
 
-import { protectedRoute } from '../utils/protectedRoute'
+import { protectedRoute } from '../utils/protectedRoute.js'
 
 import {
   getCartProducts,
   addToCart,
   removeAllFromCart,
   updateQuantity,
-} from '../controller/cart.controller'
+} from '../controller/cart.controller.js'
 
 const router = express.Router()
 

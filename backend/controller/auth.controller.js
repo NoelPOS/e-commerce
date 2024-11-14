@@ -32,7 +32,7 @@ const setCookies = (res, accessToken, refreshToken) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
-      maxAte: 15 * 60 * 1000,
+      maxAge: 15 * 60 * 1000,
     })
 
     res.cookie('refreshToken', refreshToken, {

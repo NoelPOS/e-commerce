@@ -1,8 +1,8 @@
-import Product from '../models/product.model'
-import { client } from '../lib/redis'
+import Product from '../models/product.model.js'
+import { client } from '../lib/redis.js'
 import cloudinary from '../lib/cloudinary.js'
 
-const getAllProducts = async (req, res) => {
+export const getAllProducts = async (req, res) => {
   try {
     const products = await Product.find({})
     res.json(products)
@@ -53,7 +53,7 @@ export const createProduct = async (req, res) => {
         folder: 'products',
       })
     }
-    const product = Product.create({
+    const product = await Product.create({
       name,
       description,
       price,
