@@ -1,13 +1,30 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useUserStore } from '../stores/useUserStore'
 import { Toaster } from 'react-hot-toast'
 
 const Login = () => {
   const { login } = useUserStore()
+  const [formData, setFormData] = useState({ email: '', password: '' })
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.id]: e.target.value,
+    })
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    login(formData)
+  }
+
   return (
     <div className='flex items-center justify-center min-h-screen p-4'>
-      <form className='w-full max-w-md bg-gray-800 rounded-lg shadow-md p-8'>
+      <form
+        className='w-full max-w-md bg-gray-800 rounded-lg shadow-md p-8'
+        onSubmit={handleSubmit}
+      >
         <h2 className='text-2xl font-bold mb-6 text-center text-emerald-500'>
           Login
         </h2>
@@ -21,6 +38,8 @@ const Login = () => {
               id='email'
               placeholder='johndoe@example.com'
               className='w-full px-3 py-2 bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500'
+              value={formData.email}
+              onChange={handleChange}
             />
           </div>
           <div>
@@ -35,6 +54,8 @@ const Login = () => {
               id='password'
               placeholder='••••••••'
               className='w-full px-3 py-2 bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500'
+              value={formData.password}
+              onChange={handleChange}
             />
           </div>
         </div>

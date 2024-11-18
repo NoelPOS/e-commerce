@@ -1,11 +1,12 @@
 import React from 'react'
 import { ShoppingCart, UserPlus, LogIn, LogOut, Lock } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { useUserStore } from '../stores/useUserStore'
 
 const Navbar = () => {
-  const user = false
-  const cart = [2, 3, 4]
-  const isAdmin = false
+  const { user, logout } = useUserStore()
+  const isAdmin = user?.role === 'admin'
+  const cart = user?.cart || []
   return (
     <div className='w-full py-3 '>
       <div className='flex justify-between px-5'>
@@ -66,13 +67,18 @@ const Navbar = () => {
           )}
 
           {user && (
-            <Link
-              to='/logout'
+            <button
+              onClick={logout}
               className='relative flex flex-col gap-1 items-center p-2'
             >
-              <LogOut size={24} />
-              <span>Logout</span>
-            </Link>
+              <Link
+                to='/logout'
+                className='relative flex flex-col gap-1 items-center p-2'
+              >
+                <LogOut size={24} />
+                <span>Logout</span>
+              </Link>
+            </button>
           )}
         </div>
       </div>
