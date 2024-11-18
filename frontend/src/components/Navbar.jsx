@@ -3,51 +3,73 @@ import { ShoppingCart, UserPlus, LogIn, LogOut, Lock } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 const Navbar = () => {
-  const user = true
+  const user = false
   const cart = [2, 3, 4]
   const isAdmin = false
   return (
-    <div className='w-full p-5 top-0 absolute '>
+    <div className='w-full py-3 '>
       <div className='flex justify-between px-5'>
         <div>
-          <Link to='/'>E-Commerce</Link>
-        </div>
-        <div className='flex gap-5'>
-          <Link to='/cart' className='relative'>
-            <ShoppingCart size={24} />
-            {cart.length > 0 && (
-              <span className='absolute -top-2  -left-2'>{cart.length}</span>
-            )}
-            <span>Cart</span>
+          <Link to='/' className='font-bold text-2xl text-emerald-400'>
+            E-Commerce
           </Link>
+        </div>
+        <div className='flex gap-5 items-center'>
+          {user && !isAdmin && (
+            <Link
+              to='/cart'
+              className=' relative flex flex-col gap-1 items-center p-2'
+            >
+              <ShoppingCart size={24} />
+              {cart.length > 0 && (
+                <span className='absolute -top-1  left-0'>{cart.length}</span>
+              )}
+              <span>Cart</span>
+            </Link>
+          )}
+
+          {isAdmin && (
+            <Link
+              to='/admin'
+              className='relative flex flex-col gap-1 items-center p-2'
+            >
+              <Lock size={24} />
+              <span>Admin</span>
+            </Link>
+          )}
+
           {user ? (
             <Link
               to='/profile'
-              className='flex gap-1 bg-emerald-900 rounded-lg items-center px-2'
+              className='relative flex flex-col gap-1 items-center p-2'
             >
-              <UserPlus size={24} />
+              <UserPlus size={22} />
               <span>Profile</span>
             </Link>
           ) : (
             <>
-              <Link to='/login'>
+              <Link
+                to='/login'
+                className='relative flex flex-col gap-1 items-center p-2'
+              >
                 <LogIn size={24} />
                 <span> Login</span>
               </Link>
-              <Link to='/signup'>
+              <Link
+                to='/signup'
+                className='relative flex flex-col gap-1 items-center p-2'
+              >
                 <UserPlus size={24} />
                 <span> Signup</span>
               </Link>
             </>
           )}
-          {isAdmin && (
-            <Link to='/admin'>
-              <Lock size={24} />
-              <span>Admin</span>
-            </Link>
-          )}
+
           {user && (
-            <Link to='/logout'>
+            <Link
+              to='/logout'
+              className='relative flex flex-col gap-1 items-center p-2'
+            >
               <LogOut size={24} />
               <span>Logout</span>
             </Link>
