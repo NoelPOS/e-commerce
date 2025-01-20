@@ -1,6 +1,7 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import cookieParser from 'cookie-parser'
+
 import authRoutes from './route/auth.route.js'
 import productRoutes from './route/product.route.js'
 import couponRoutes from './route/coupon.route.js'

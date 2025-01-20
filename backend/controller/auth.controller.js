@@ -2,19 +2,30 @@ import User from '../models/user.model.js'
 import jwt from 'jsonwebtoken'
 import { client } from '../lib/redis.js'
 
+import dotenv from 'dotenv'
+
+dotenv.config()
+
 const generateToken = (id) => {
+  if (!process.env.ACCESS_TOKEN_SECRET || !process.env.REFRESH_TOKEN_SECRET) {
+    throw new Error('Token secrets are not defined in environment variables');
+  }
+
   try {
-    const accessToken = jwt.sign({ id }, process.env.JWT_ACCESS_SECRET, {
+    const accessToken = jwt.sign({ id }, process.env.ACCESS_TOKEN_SECRET, {
       expiresIn: '15m',
     })
 
-    const refreshToken = jwt.sign({ id }, process.env.JWT_REFRESH_SECRET, {
+   
+
+    const refreshToken = jwt.sign({ id }, process.env.REFRESH_TOKEN_SECRET, {
       expiresIn: '7d',
     })
 
     return { accessToken, refreshToken }
   } catch (error) {
     console.log(error)
+    return null
   }
 }
 
@@ -65,7 +76,12 @@ export const signup = async (req, res) => {
       password,
     })
 
-    const { accessToken, refreshToken } = generateToken(user._id)
+    // convert user._id from object to string
+    const userId = user._id.toString()
+
+    console.log(userId) 
+
+    const { accessToken, refreshToken } = generateToken(userId)
 
     await storeRefreshToken(refreshToken, user._id)
 
@@ -123,7 +139,7 @@ export const logout = async (req, res) => {
     const refreshToken = req.cookies.refreshToken
 
     if (refreshToken) {
-      const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET)
+      const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET)
 
       await client.del(`refreshToken:${decoded.id}`)
     }
@@ -149,7 +165,7 @@ export const refreshToken = async (req, res) => {
       })
     }
 
-    const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET)
+    const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET)
 
     const fromRedis = await client.get(`refreshToken:${decoded.id}`)
 
@@ -161,7 +177,7 @@ export const refreshToken = async (req, res) => {
 
     const accessToken = jwt.sign(
       { id: decoded.id },
-      process.env.JWT_ACCESS_SECRET,
+      process.env.ACCESS_TOKEN_SECRET,
       {
         expiresIn: '15m',
       }

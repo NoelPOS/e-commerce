@@ -1,5 +1,8 @@
 import jwt from 'jsonwebtoken'
 import User from '../models/user.model.js'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 export const protectedRoute = async (req, res, next) => {
   try {
@@ -11,7 +14,7 @@ export const protectedRoute = async (req, res, next) => {
       })
     }
     try {
-      const decoded = jwt.verify(accessToken, process.env.JWT_ACCESS_SECRET)
+      const decoded = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET)
 
       const user = await User.findById(decoded.id).select('-password')
 
